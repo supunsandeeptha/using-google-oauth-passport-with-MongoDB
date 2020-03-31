@@ -4,8 +4,8 @@ const OAuth2 = google.auth.OAuth2;
 const moment = require("moment");
 
 const oauth2Client = new OAuth2(
-    "445805490759-1653aqat0lhlv",  // use your client id
-    "dBmHiKb", // use your client secret
+    "<clientID>",  // use your client id
+    "<clientSecret>", // use your client secret
     "http://localhost:3000/auth/google/callback", // use your callback url
 );
 

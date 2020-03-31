@@ -9,28 +9,19 @@ const User = require('../models/user.js');
 
 module.exports = function(passport) {
   passport.serializeUser(function(user, done) {
-    console.log('---------------------------')
-    console.log(user);
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
-      console.log(user);
       done(err, user);
     });
   });
-  // passport.deserializeUser(function(obj, done) {
-  //   done(null, obj);
-  //   // User.findById(id, function(err, user) {
-  //   //   done(err, user);
-  //   // });
-  // });
 
   passport.use(new GoogleStrategy({
-      clientID: "445805490759-1653aqat0lhlv5ao2v7eotdo5dpbj828.apps.googleusercontent.com",
-      clientSecret: "dBmHiKbXg7xrP0BTRZ-3t5Fz",
-      callbackURL: "http://localhost:3000/auth/google/callback",
+      clientID: "<ClientID>", // use your clientID
+      clientSecret: "<ClientSecret>", // use your client secret
+      callbackURL: "http://localhost:3000/auth/google/callback", // use your call backURL
       passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, accessToken, refreshToken, params, profile, done) {
@@ -38,7 +29,7 @@ module.exports = function(passport) {
         // calculation of expiry date
         const expiry_date = moment().add(params.expires_in, "s").format("x");
         if (!req.user) {
-
+          // querying the database for the user
           User.findOne({
             'google.id': profile.id
           }, function(err, user) {
@@ -85,8 +76,6 @@ module.exports = function(passport) {
               newUser.google.displayName = profile.displayName;
               newUser.google.email = profile.emails[0].value;
               newUser.google.profileImg = profile.photos[0].value;
-              // newUser.lastUsed.calendar = '';
-              // newUser.lastUsed.sheet = '';
               newUser.google.expiry_date = expiry_date;
 
               newUser.save(function(err) {
@@ -117,8 +106,6 @@ module.exports = function(passport) {
             return done(null, user);
           });
         }
-        
-       // return done(null,profile);
       });
 
     }
