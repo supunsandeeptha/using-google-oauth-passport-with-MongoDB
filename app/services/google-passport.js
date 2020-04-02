@@ -6,6 +6,8 @@ const moment = require("moment");
 
 const User = require('../models/user.js');
 
+// auth crendtials will be stored in this file
+const authCredentials = require('../../config/auth.credentials.config.js');
 
 module.exports = function(passport) {
   passport.serializeUser(function(user, done) {
@@ -19,9 +21,9 @@ module.exports = function(passport) {
   });
 
   passport.use(new GoogleStrategy({
-      clientID: "<ClientID>", // use your clientID
-      clientSecret: "<ClientSecret>", // use your client secret
-      callbackURL: "http://localhost:3000/auth/google/callback", // use your call backURL
+      clientID: authCredentials.googleauth.clientId, // add your client id to auth config file
+      clientSecret: authCredentials.googleauth.clientSecret, // add your client secret to auth config file
+      callbackURL: authCredentials.googleauth.callBackUrl, // add your callbackurl to auth config file
       passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
     function(req, accessToken, refreshToken, params, profile, done) {
