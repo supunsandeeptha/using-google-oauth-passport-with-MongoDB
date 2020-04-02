@@ -2,11 +2,14 @@ const User = require("../models/user.js");
 const {google} = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const moment = require("moment");
+// auth crendentials will be stored in this file
+const authCredentials = require('../../config/auth.credentials.config.js');
+
 
 const oauth2Client = new OAuth2(
-    "<clientID>",  // use your client id
-    "<clientSecret>", // use your client secret
-    "http://localhost:3000/auth/google/callback", // use your callback url
+    authCredentials.googleauth.clientId,  // add your client id to authcredentials file
+    authCredentials.googleauth.clientSecret, // use your client secret
+    authCredentials.googleauth.callBackUrl, // use your callback url
 );
 
 exports.checkToken = (req, res, next) => {
